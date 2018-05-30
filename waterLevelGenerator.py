@@ -35,17 +35,3 @@ def troughsGenerator(topography):
     return allTroughs
 def totalWater(testCase):
     print("Topography: {} \n water levels: {} \n\n".format(testCase, waterInTroughs(troughsGenerator(testCase))))
-
-mainTest = [5,3,2,4,1,2]
-test1 = [5,3,2,4,5,6,1,2,5,6,7,1,2]
-test2 = [0,0,0,0,0]
-test3 = [5,5,5,5,5]
-test4 = [50,0,0,0,50]
-test5 = [1,2,3,4,5]
-
-waterInTroughs(troughsGenerator(mainTest))
-waterInTroughs(troughsGenerator(test1))
-waterInTroughs(troughsGenerator(test2))
-waterInTroughs(troughsGenerator(test3))
-waterInTroughs(troughsGenerator(test4))
-waterInTroughs(troughsGenerator(test5))
