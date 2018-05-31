@@ -4,15 +4,38 @@
 # I also subtract the bound difference water to ensure I get that off since it cant be held.
 #This can also be achieved by just subtrscting the rock height from the minimum of the bounds but getting
 # the boundDifference feels more intuitive.
+def isABasin(topography):
+    return (topography[0]>max(topography[1:-1]) and topography[-1]>max(topography[1:-1]))
+def isTrenched(troughs):
+    trenches = len(troughs[1:-1])
+    if trenches>0:
+        print("This landscape has {} trench(es)".format(trenches))
+        return True
+    return False
+
 def waterInTroughs(troughs, topography):
     waterLevel = 0
-    isBasin = (topography[0]==topography[-1]) and (topography[0]>max(topography[1:-1]) and topography[-1]>max(topography[1:-1]))
-    if isBasin:
+    Basin = isABasin(topography)
+    hasTrench = isTrenched(troughs)
+
+    if Basin:
         print("The whole topography is a basin: Full trough is {}".format(topography))
         for rocks in topography:
-            water = topography[0] - rocks
+            water = min(topography[0], topography[-1]) - rocks
             if water > 0:
                 waterLevel += water
+    elif hasTrench:
+        count=0
+        for trough in troughs:
+            for rocks in trough[1:]:
+                if len(topography[:count])>0:
+                    BasinHeight  = topography[0]
+                else:
+                    BasinHeight = topography[-1]
+                water = BasinHeight - rocks
+                if water > 0:
+                    waterLevel += water
+            count+=len(troughs)
     else:
         for trough in troughs:
             for rocks in trough:
