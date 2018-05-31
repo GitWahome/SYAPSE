@@ -4,16 +4,24 @@
 # I also subtract the bound difference water to ensure I get that off since it cant be held.
 #This can also be achieved by just subtrscting the rock height from the minimum of the bounds but getting
 # the boundDifference feels more intuitive.
-def waterInTroughs(troughs):
+def waterInTroughs(troughs, topography):
     waterLevel = 0
-    for trough in troughs:
-        boundDifferences = abs(trough[0]-trough[-1])
-        for rocks in trough:
-            water = max(trough)-rocks - boundDifferences
-            if water>0:
+    isBasin = (topography[0]==topography[-1]) and (topography[0]>max(topography[1:-1]) and topography[-1]>max(topography[1:-1]))
+    if isBasin:
+        print("The whole topography is a basin: Full trough is {}".format(topography))
+        for rocks in topography:
+            water = topography[0] - rocks
+            if water > 0:
                 waterLevel += water
+    else:
+        for trough in troughs:
+            for rocks in trough:
+                boundDifferences = abs(trough[0] - trough[-1])
+                water = max(trough) - rocks - boundDifferences
+                if water>0:
+                    waterLevel += water
     return waterLevel
-#I used this to generate 'troughs' which can trap water. This basically looks for down gradients appending them to a list.
+#I used this to generate 'trough' which can trap water. This basically looks for down gradients appending them to a list.
 #Should an up gradient be found, another invariant takes over and keeps track of whether a drop is detected.
 #The values keep getting appended and this creates a trough. When a drop is detected the trough is done, a new one is initiated
 def troughsGenerator(topography):
@@ -23,7 +31,7 @@ def troughsGenerator(topography):
     while i< len(topography)-1:
         if topography[i]<topography[i-1]:
             trough.append(topography[i])
-        elif topography[i + 1] >= topography[i] or topography[i+1]< trough[0]:
+        elif topography[i + 1] >= topography[i]:
             trough.append(topography[i])
         else:
             trough.append(topography[i])
@@ -32,8 +40,8 @@ def troughsGenerator(topography):
         i += 1
     trough.append(topography[-1])
     allTroughs.append(trough)
-    print("This is the trough/slopes structure: \n{} \n".format(allTroughs))
+    print("Generated troughs: {}".format(allTroughs))
     return allTroughs
-def totalWater(testCase):
-    print("Topography: {} \n water levels: {} \n\n".format(testCase, waterInTroughs(troughsGenerator(testCase))))
 
+def totalWater(testCase):
+    print("Topography: {} \n water levels: {} \n\n".format(testCase, waterInTroughs(troughsGenerator(testCase), testCase)))
