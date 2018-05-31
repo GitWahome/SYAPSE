@@ -12,11 +12,11 @@ For example:
 	* is water
 The list [5, 3, 2, 4, 1, 2] would look like this:
 
-O
-O**O
-OO*O
-OOOO*O
-OOOOOO
+	O
+	O**O
+	OO*O
+	OOOO*O
+	OOOOOO
 
 and hold 4 units of water
 
