@@ -13,7 +13,7 @@ def waterInTroughs(troughs):
             if water>0:
                 waterLevel += water
     return waterLevel
-#I used this to generate 'trough' which can trap water. This basically looks for down gradients appending them to a list.
+#I used this to generate 'troughs' which can trap water. This basically looks for down gradients appending them to a list.
 #Should an up gradient be found, another invariant takes over and keeps track of whether a drop is detected.
 #The values keep getting appended and this creates a trough. When a drop is detected the trough is done, a new one is initiated
 def troughsGenerator(topography):
@@ -23,7 +23,7 @@ def troughsGenerator(topography):
     while i< len(topography)-1:
         if topography[i]<topography[i-1]:
             trough.append(topography[i])
-        elif topography[i + 1] >= topography[i]:
+        elif topography[i + 1] >= topography[i] or topography[i+1]< trough[0]:
             trough.append(topography[i])
         else:
             trough.append(topography[i])
@@ -32,6 +32,8 @@ def troughsGenerator(topography):
         i += 1
     trough.append(topography[-1])
     allTroughs.append(trough)
+    print("This is the trough/slopes structure: \n{} \n".format(allTroughs))
     return allTroughs
 def totalWater(testCase):
     print("Topography: {} \n water levels: {} \n\n".format(testCase, waterInTroughs(troughsGenerator(testCase))))
+
